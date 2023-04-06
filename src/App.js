@@ -1,9 +1,14 @@
-import './App.css';
+   import './App.css';
 import Cards from './components/Cards.jsx';
 import Nav from './components/Nav';
+import About from './components/About';
+import Detail from './components/Detail';
 import {useState} from 'react';
 import axios from 'axios';
+import { Routes, Route } from 'react-router-dom';
 
+const URL_BASE = 'https://be-a-rym.up.railway.app/api/character'
+const API_KEY = '42513035bf40.e58e3dd7120d289e8e46'
 // const example = {
 //    id: 1,
 //    name: 'Rick Sanchez',
@@ -22,7 +27,8 @@ function App() {
       const [characters, setCharacters] = useState([]);
 
       const onSearch = (id) => {
-         axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
+         axios(`${URL_BASE}/${id}?key=${API_KEY}`)
+         .then(({ data }) => {
             if (data.name) {
                setCharacters((oldChars) => [...oldChars, data]);
             } else {
@@ -44,8 +50,13 @@ const onClose = (id) => {
    return (
       <div className='App'>
          <Nav onSearch={onSearch}/>
-         <Cards characters={characters} onClose={onClose}/>
-         
+         <Routes>
+            <Route path='/home' element={ <Cards characters={characters} 
+            onClose={onClose}/> }/>
+            <Route path='about' element={<About/>} />
+            <Route path='detail/:id' element={<Detail/>} /> 
+         </Routes>
+           
       </div>
    );
 }
