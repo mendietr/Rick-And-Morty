@@ -1,11 +1,12 @@
-   import './App.css';
-import Cards from './components/Cards.jsx';
-import Nav from './components/Nav';
-import About from './components/About';
-import Detail from './components/Detail';
-import {useState} from 'react';
+import './App.css';
+import Cards from './components/Cards/Cards.jsx';
+import Nav from './components/Nav/Nav';
+import About from './components/About/About';
+import Detail from './components/Detail/Detail';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import Form from './components/Form/Form';
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character'
 const API_KEY = '42513035bf40.e58e3dd7120d289e8e46'
@@ -24,7 +25,31 @@ const API_KEY = '42513035bf40.e58e3dd7120d289e8e46'
 
 
 function App() {
+      const location = useLocation(); 
+      const navigate = useNavigate();
       const [characters, setCharacters] = useState([]);
+      const [access, setAccess] = useState(false);
+      
+      const username = "mendietr1978@icloud.com";
+      const password = "123abc";
+
+      const login = (userData) => {
+         if(userData.password === password && userData.username === username) {
+         setAccess(true);
+         navigate("/home");
+         }
+      }
+
+      // function login(userData) {
+      //    if(userData.password === password && userData.username === username) {
+      //    setAccess(true);
+      //    navigate("/home");
+      //    }
+      // }
+
+useEffect(() => {
+   !access && navigate('/')
+}, [navigate])
 
       const onSearch = (id) => {
          axios(`${URL_BASE}/${id}?key=${API_KEY}`)
@@ -32,9 +57,9 @@ function App() {
             if (data.name) {
                setCharacters((oldChars) => [...oldChars, data]);
             } else {
-               window.alert('¡No hay personajes con este ID!');
+               alert('¡No hay personajes con este ID!');
             }
-         });
+         })
       }
       
 
@@ -43,21 +68,25 @@ function App() {
       // }
       // console.log(characters)
 const onClose = (id) => {
-   const charactersFiltered = characters.filter(character => character.id !== Number(id))
-   setCharacters(charactersFiltered)
+      setCharacters(characters.filter(character => character.id !== id))
+
+   // const charactersFiltered = characters.filter(character => character.id !== Number(id))
+   // setCharacters(charactersFiltered)
 }
 
    return (
       <div className='App'>
-         <Nav onSearch={onSearch}/>
+         
+         {location.pathname === '/' ? <Form login={login}/> : 
+         <Nav onSearch={onSearch}/>}
          <Routes>
             <Route path='/home' element={ <Cards characters={characters} 
             onClose={onClose}/> }/>
             <Route path='about' element={<About/>} />
             <Route path='detail/:id' element={<Detail/>} /> 
          </Routes>
-           
       </div>
+           
    );
 }
 

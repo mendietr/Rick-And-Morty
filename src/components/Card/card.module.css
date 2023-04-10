@@ -1,0 +1,20 @@
+.container{
+    background-color:rgb(28, 158, 152);
+    width: fit-content;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+.closeButton{
+    border: 0;
+    background-color: rgb(245, 9, 9);
+    width:fit-content;
+    height:fit-content;
+    border-radius: 15px;
+    transition: 0.5s;
+    color: white
+}
+.closeButton:hover{
+    box-shadow: 3px 3px 1px 0px rgba(0,0,0,0.75);
+}
+

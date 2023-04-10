@@ -1,7 +1,8 @@
-import Card from './Card';
+import Card from '../Card/Card';
+import { CardsContainer } from '../Cards/styledComponents';
 
 export default function Cards({characters, onClose}) {
-   return <div>
+   return <CardsContainer>
             {
                characters.map(({ id, name, status, species, gender, origin, image}) => {
                   return (
@@ -19,5 +20,5 @@ export default function Cards({characters, onClose}) {
                   )
                })
             }
-   </div>;
+   </CardsContainer>;
 }
