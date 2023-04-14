@@ -7,6 +7,8 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Form from './components/Form/Form';
+import Favorites from "./components/Favorites/Favorites";
+
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character'
 const API_KEY = '42513035bf40.e58e3dd7120d289e8e46'
@@ -49,18 +51,33 @@ function App() {
 
 useEffect(() => {
    !access && navigate('/')
-}, [navigate])
+}, [access, navigate])
 
-      const onSearch = (id) => {
-         axios(`${URL_BASE}/${id}?key=${API_KEY}`)
-         .then(({ data }) => {
-            if (data.name) {
-               setCharacters((oldChars) => [...oldChars, data]);
-            } else {
-               alert('¡No hay personajes con este ID!');
-            }
-         })
-      }
+const onSearch = (id) => {
+   for (let i = 1; i <= id; i++) {
+     axios(`${URL_BASE}/${i}?key=${API_KEY}`) //esta linea sirve para agregar todas las tarjetas desde la 1 hasta el numero indicado
+   //   axios(`${URL_BASE}/${id}?key=${API_KEY}`) //esta linea sirve para agregar una sola tarjeta con el id
+       .then(({ data }) => {
+         if (data.name) {
+           setCharacters((oldChars) => [...oldChars, data]);
+         } else {
+           alert('¡No hay personajes con este ID!');
+         }
+       })
+   }
+ }
+ 
+
+      // const onSearch = (id) => {
+      //    axios(`${URL_BASE}/${id}?key=${API_KEY}`)
+      //    .then(({ data }) => {
+      //       if (data.name) {
+      //          setCharacters((oldChars) => [...oldChars, data]);
+      //       } else {
+      //          alert('¡No hay personajes con este ID!');
+      //       }
+      //    })
+      // }
       
 
       // const onSearch = () => {
@@ -84,6 +101,7 @@ const onClose = (id) => {
             onClose={onClose}/> }/>
             <Route path='about' element={<About/>} />
             <Route path='detail/:id' element={<Detail/>} /> 
+            <Route path='/favorites' element={<Favorites/>} />
          </Routes>
       </div>
            
