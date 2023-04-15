@@ -2,6 +2,7 @@ import Card from "../Card/Card";
 import { connect, useDispatch } from 'react-redux';
 import { filterCards, orderCards } from "../../Redux/actions";
 import { useState } from "react";
+import { Link } from 'react-router-dom'
 
 const Favorites = ({ myFavorites }) => {
     const dispatch = useDispatch();
